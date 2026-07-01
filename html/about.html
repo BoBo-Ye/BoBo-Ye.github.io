@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About - BoBo Ye</title>
+  <base href="../">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="about-body">
+  <main class="about-page">
+    <a class="back-link" href="index.html" aria-label="Back to home">Home</a>
+
+    <header class="profile about-profile">
+      <img class="avatar" data-about-avatar src="assets/imgs/headpic_512.png" alt="BoBo Ye">
+      <h1 data-about-name>BoBo Ye</h1>
+      <p class="headline" data-about-headline>Your headline goes here.</p>
+    </header>
+
+    <section class="about-content" aria-label="About information">
+      <div class="bio" data-about-bio></div>
+      <dl class="info-list" data-about-details></dl>
+      <nav class="social-links" data-about-links aria-label="Social links"></nav>
+      <p class="data-error" data-about-error hidden>
+        About information could not be loaded. Please run this site from a local server or check data/about.json.
+      </p>
+    </section>
+  </main>
+
+  <script src="js/about.js"></script>
+</body>
+</html>

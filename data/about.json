@@ -1,0 +1,37 @@
+{
+  "name": "BoBo Ye",
+  "avatar": "assets/imgs/headpic_512.png",
+  "headline": "Hello World",
+  "bio": [
+    "Hi, I'm BoBo, a student developer exploring Agents. 👋 "
+  ],
+  "details": [
+    {
+      "label": "Location",
+      "value": "Shanghai, China"
+    },
+    {
+      "label": "Email",
+      "value": "yehw2024@shanghaitech.edu.cn"
+    },
+    {
+      "label": "Major",
+      "value": "Computer Science"
+    },
+    {
+      "label": "Currently",
+      "value": "Looking for an internship!"
+    },
+    {
+      "label": "Interests",
+      "value": "Coding, Swimming, MOBA Games"
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "type": "github",
+      "url": "https://github.com/BoBo-Ye"
+    }
+  ]
+}
