@@ -7,15 +7,38 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
+  position: relative;
+  overflow-x: hidden;
   color: #ddd;
   font: 16px/1.4 "Trebuchet MS", "Helvetica Neue", Arial, sans-serif;
-  background:
-    radial-gradient(circle at center, rgba(255, 255, 255, .05), transparent 34rem),
-    #202020;
+  background: #202020;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(82vw, 780px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, .14) 0%,
+    rgba(255, 255, 255, .06) 46%,
+    transparent 78%
+  );
+  filter: blur(14px) brightness(.78);
+  opacity: .36;
+  transform: translate(-50%, -50%) scale(.82);
+  animation: light-orb-breathe 3.8s ease-in-out infinite;
 }
 
 .home {
   width: min(88vw, 720px);
+  position: relative;
+  z-index: 1;
   text-align: center;
 }
 
@@ -31,7 +54,7 @@ body {
   border: 3px solid #ddd;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 18px rgba(255, 255, 255, .16);
+  box-shadow: 0 0 14px rgba(255, 255, 255, .12);
 }
 
 h1 {
@@ -73,6 +96,27 @@ a {
 
 a:hover {
   color: #fff;
+}
+
+@keyframes light-orb-breathe {
+  0%,
+  100% {
+    opacity: .32;
+    filter: blur(18px) brightness(.72);
+    transform: translate(-50%, -50%) scale(.78);
+  }
+
+  50% {
+    opacity: .62;
+    filter: blur(13px) brightness(1.04);
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
 }
 
 @media (max-width: 460px) {
