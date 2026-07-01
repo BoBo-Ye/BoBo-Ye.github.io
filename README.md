@@ -1,11 +1,12 @@
 # BoBo Ye Personal Site
 
-A small static personal homepage for BoBo Ye. The site includes a profile landing page, a data-driven About page, shared styling, and local profile assets.
+A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Papers pages, shared styling, and local profile assets.
 
 ## Features
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details from `data/about.json`.
+- Papers page that renders BibTeX entries listed in `data/bibs/index.json`.
 - Shared dark visual style in `css/style.css`, including a reduced-motion-safe animated light effect.
 - Dependency-free static files that can be served from any basic web server.
 
@@ -19,17 +20,22 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 |-- css/
 |   `-- style.css
 |-- data/
-|   `-- about.json
+|   |-- about.json
+|   `-- bibs/
+|       |-- index.json
+|       `-- *.bib
 |-- html/
-|   `-- about.html
+|   |-- about.html
+|   `-- papers.html
 |-- js/
-|   `-- about.js
+|   |-- about.js
+|   `-- papers.js
 `-- index.html
 ```
 
 ## Run Locally
 
-This is a dependency-free static site. Because the About page fetches JSON, serve the directory with a local web server instead of opening `html/about.html` directly from the filesystem.
+This is a dependency-free static site. Because the About and Papers pages fetch JSON and BibTeX files, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
 
 ```bash
 python -m http.server 8000
@@ -39,9 +45,14 @@ Then open:
 
 - Home: `http://localhost:8000/`
 - About: `http://localhost:8000/html/about.html`
+- Papers: `http://localhost:8000/html/papers.html`
 
 ## Editing Profile Content
 
 Update `data/about.json` to change the profile name, avatar, headline, bio, details, and social links displayed on the About page.
 
 Supported social link rendering currently includes GitHub-style icons through `js/about.js`. Additional link types can be added by extending the `iconPaths` map.
+
+## Editing Papers
+
+Add future papers as `.bib` files in `data/bibs/`, then add each file name to the `bibs` array in `data/bibs/index.json`. The Papers page reads the BibTeX fields directly; `eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
