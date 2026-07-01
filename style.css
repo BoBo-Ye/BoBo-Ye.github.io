@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #ddd;
+  font: 16px/1.4 "Trebuchet MS", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, .05), transparent 34rem),
+    #202020;
+}
+
+.home {
+  width: min(88vw, 720px);
+  text-align: center;
+}
+
+.profile {
+  padding-bottom: 36px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+.avatar {
+  width: 140px;
+  height: 140px;
+  border: 3px solid #ddd;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 18px rgba(255, 255, 255, .16);
+}
+
+h1 {
+  margin: 22px 0 0;
+  font-size: 56px;
+  font-weight: 400;
+  text-shadow: 0 0 8px rgba(255, 255, 255, .35);
+}
+
+.nav {
+  margin-top: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  border-left: 1px solid rgba(255, 255, 255, .12);
+}
+
+li:last-child {
+  border-right: 1px solid rgba(255, 255, 255, .12);
+}
+
+a {
+  display: block;
+  padding: 24px 12px;
+  color: #aaa;
+  font-size: 32px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #fff;
+}
+
+@media (max-width: 460px) {
+  .home {
+    width: 92vw;
+  }
+
+  .avatar {
+    width: 112px;
+    height: 112px;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  ul {
+    grid-template-columns: 1fr;
+  }
+
+  li,
+  li:last-child {
+    border-right: 1px solid rgba(255, 255, 255, .12);
+  }
+}
