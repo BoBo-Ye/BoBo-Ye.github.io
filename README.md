@@ -1,13 +1,13 @@
 # BoBo Ye Personal Site
 
-A small static personal homepage for BoBo Ye. The site includes a profile landing page, a data-driven About page, shared styling, and local agent skills for project maintenance.
+A small static personal homepage for BoBo Ye. The site includes a profile landing page, a data-driven About page, shared styling, and local profile assets.
 
 ## Features
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details from `data/about.json`.
 - Shared dark visual style in `css/style.css`, including a reduced-motion-safe animated light effect.
-- Local agent skills for README generation, skill authoring, skill discovery, Git commits, and project updates.
+- Dependency-free static files that can be served from any basic web server.
 
 ## Project Structure
 
@@ -24,19 +24,8 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 |   `-- about.html
 |-- js/
 |   `-- about.js
-|-- index.html
-|-- .gitignore
-`-- .agents/
-    `-- skills/
-        |-- create-readme/
-        |-- create-skill/
-        |-- find-skills/
-        |-- git-commit/
-        `-- update-project/
+`-- index.html
 ```
-
-> [!NOTE]
-> `.agents/` is listed in `.gitignore`, so the local skills are workspace tooling rather than site files intended for deployment.
 
 ## Run Locally
 
@@ -56,15 +45,3 @@ Then open:
 Update `data/about.json` to change the profile name, avatar, headline, bio, details, and social links displayed on the About page.
 
 Supported social link rendering currently includes GitHub-style icons through `js/about.js`. Additional link types can be added by extending the `iconPaths` map.
-
-## Local Agent Skills
-
-The workspace includes these local skills:
-
-| Skill | Purpose |
-| --- | --- |
-| `create-readme` | Create concise, professional project README files. |
-| `create-skill` | Guide creation or updates of agent skills. |
-| `find-skills` | Discover installable skills for specialized tasks. |
-| `git-commit` | Create conventional commits from analyzed diffs. |
-| `update-project` | Refresh the README, commit changes, and summarize project updates. |
