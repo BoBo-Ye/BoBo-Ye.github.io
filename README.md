@@ -1,13 +1,14 @@
 # BoBo Ye Personal Site
 
-A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Papers pages, shared styling, and local profile and resume assets.
+A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Papers pages, a Markdown-powered Blogs page, shared styling, and local profile and resume assets.
 
 ## Features
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
 - Papers page that renders BibTeX entries listed in `data/bibs/index.json`, including badges, date-aware ordering, tagged titles, featured-author highlighting, preview images, and paper descriptions.
-- Shared dark visual style in `css/style.css`, including responsive About and Papers layouts and a reduced-motion-safe animated light effect.
+- Blogs page that opens as a four-column card catalog and renders Markdown files listed in `data/blogs/index.json`, including front matter, tags, code blocks, lists, block quotes, links, and images.
+- Shared dark visual style in `css/style.css`, including responsive About, Blogs, and Papers layouts and a reduced-motion-safe animated light effect.
 - Local profile, resume, and publication preview assets kept under `assets/`.
 - Dependency-free static files that can be served from any basic web server.
 
@@ -26,21 +27,26 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 |   `-- style.css
 |-- data/
 |   |-- about.json
+|   |-- blogs/
+|   |   |-- index.json
+|   |   `-- *.md
 |   `-- bibs/
 |       |-- index.json
 |       `-- *.bib
 |-- html/
 |   |-- about.html
+|   |-- blog.html
 |   `-- papers.html
 |-- js/
 |   |-- about.js
+|   |-- blog.js
 |   `-- papers.js
 `-- index.html
 ```
 
 ## Run Locally
 
-This is a dependency-free static site. Because the About and Papers pages fetch JSON and BibTeX files, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
+This is a dependency-free static site. Because the About, Blogs, and Papers pages fetch JSON, Markdown, and BibTeX files, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
 
 ```bash
 python -m http.server 8000
@@ -50,6 +56,7 @@ Then open:
 
 - Home: `http://localhost:8000/`
 - About: `http://localhost:8000/html/about.html`
+- Blogs: `http://localhost:8000/html/blog.html`
 - Papers: `http://localhost:8000/html/papers.html`
 
 ## Editing Profile Content
@@ -67,3 +74,34 @@ Add future papers as `.bib` files in `data/bibs/`, then add each file name to th
 `url` and `doi` fields make paper titles clickable. Optional `image`, `thumbnail`, `preview`, or `teaser` fields render a paper preview image, and optional `description`, `abstract`, or `summary` fields render a short overview beside it. Use `imageAlt` or `alt` to override generated image alt text.
 
 `eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
+
+## Editing Blogs
+
+Add blog posts as `.md` files in `data/blogs/`, then list each file in `data/blogs/index.json`.
+
+```json
+{
+  "posts": [
+    {
+      "file": "welcome.md"
+    }
+  ]
+}
+```
+
+Each Markdown post can include front matter:
+
+```md
+---
+title: Blog Template Notes
+date: 2026-07-02
+summary: A short intro for the post list and article header.
+tags: [Site, Markdown]
+---
+
+## Your first section
+
+Write the post body here.
+```
+
+Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, bold and italic text, horizontal rules, and fenced code blocks.

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blogs - BoBo Ye</title>
+  <base href="../">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="blog-body">
+  <main class="blog-page">
+    <a class="back-link" href="index.html" aria-label="Back to home">Home</a>
+
+    <header class="page-header">
+      <h1>Blogs</h1>
+    </header>
+
+    <section class="blog-content" aria-label="Blog posts">
+      <div class="blog-catalog" data-blog-catalog hidden></div>
+
+      <article class="blog-article markdown-body" data-blog-article hidden></article>
+
+      <p class="data-error" data-blog-error hidden>
+        Blog posts could not be loaded. Please run this site from a local server or check data/blogs/index.json.
+      </p>
+    </section>
+  </main>
+
+  <script src="js/blog.js"></script>
+</body>
+</html>
