@@ -463,6 +463,21 @@ const createPaperFromBibEntry = ({ key, fields }) => ({
     "abbr"
   ]),
   venueYear: fields.venueyear || fields.year || "",
+  image: getFirstField(fields, [
+    "image",
+    "thumbnail",
+    "preview",
+    "teaser"
+  ]),
+  imageAlt: getFirstField(fields, [
+    "imagealt",
+    "alt"
+  ]),
+  description: getFirstField(fields, [
+    "description",
+    "abstract",
+    "summary"
+  ]),
   url: fields.url || (fields.doi ? `https://doi.org/${fields.doi}` : "")
 });
 
@@ -505,6 +520,39 @@ const createTitle = (paper) => {
   return title;
 };
 
+const createPaperOverview = (paper) => {
+  if (!paper.image && !paper.description) {
+    return null;
+  }
+
+  const overview = document.createElement("div");
+  overview.className = "paper-overview";
+
+  if (paper.image) {
+    const figure = document.createElement("figure");
+    figure.className = "paper-figure";
+
+    const image = document.createElement("img");
+    image.className = "paper-image";
+    image.src = paper.image;
+    image.alt = paper.imageAlt || `${paper.title} preview`;
+    image.loading = "lazy";
+    image.decoding = "async";
+
+    figure.appendChild(image);
+    overview.appendChild(figure);
+  }
+
+  if (paper.description) {
+    const description = document.createElement("p");
+    description.className = "paper-description";
+    description.textContent = paper.description;
+    overview.appendChild(description);
+  }
+
+  return overview;
+};
+
 const createPaper = (paper) => {
   const item = document.createElement("article");
   item.className = "paper-item";
@@ -534,6 +582,11 @@ const createPaper = (paper) => {
     venue.className = "paper-venue";
     venue.textContent = venueText;
     content.appendChild(venue);
+  }
+
+  const overview = createPaperOverview(paper);
+  if (overview) {
+    content.appendChild(overview);
   }
 
   item.append(badge, content);

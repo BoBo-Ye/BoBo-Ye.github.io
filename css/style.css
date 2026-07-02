@@ -161,9 +161,13 @@ a {
   margin-top: 0;
 }
 
+.papers-page .page-header {
+  border-bottom: 0;
+}
+
 .about-content {
   max-width: 900px;
-  margin: 36px auto 0;
+  margin: 10px auto 0;
   text-align: left;
 }
 
@@ -175,6 +179,7 @@ a {
 .paper-list {
   display: grid;
   gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
 .paper-item {
@@ -182,7 +187,7 @@ a {
   grid-template-columns: max-content minmax(0, 1fr);
   gap: 24px;
   align-items: start;
-  padding: 24px 0 30px;
+  padding: 28px 0;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
   text-align: left;
 }
@@ -236,6 +241,51 @@ a {
   color: #f3f3f3;
   font-size: 16px;
   line-height: 1.35;
+}
+
+.paper-content {
+  min-width: 0;
+}
+
+.paper-overview {
+  --paper-image-width: clamp(200px, 24vw, 320px);
+  --paper-image-height: calc(var(--paper-image-width) / 2);
+  --paper-overview-gap: 18px;
+  display: grid;
+  grid-template-columns: var(--paper-image-width) minmax(0, 1fr);
+  gap: var(--paper-overview-gap);
+  align-items: stretch;
+  margin-top: 18px;
+}
+
+.paper-figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.paper-image {
+  display: block;
+  width: 100%;
+  height: var(--paper-image-height);
+  aspect-ratio: 2 / 1;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 4px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, .04);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .16);
+}
+
+.paper-description {
+  height: var(--paper-image-height);
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, .035);
+  color: #cfcfcf;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: auto;
 }
 
 .paper-author-highlight {
@@ -456,6 +506,17 @@ dd {
     grid-template-columns: 1fr;
     gap: 32px;
   }
+
+  .paper-overview {
+    --paper-image-width: 100%;
+    --paper-image-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .paper-description {
+    height: auto;
+    aspect-ratio: 2 / 1;
+  }
 }
 
 @media (max-width: 460px) {
@@ -522,7 +583,7 @@ dd {
   .paper-item {
     grid-template-columns: 1fr;
     gap: 12px;
-    padding: 22px 0 26px;
+    padding: 24px 0;
   }
 
   .paper-content {

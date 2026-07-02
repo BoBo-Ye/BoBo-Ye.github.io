@@ -6,9 +6,9 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
-- Papers page that renders BibTeX entries listed in `data/bibs/index.json`, including badges, date-aware ordering, tagged titles, and featured-author highlighting.
+- Papers page that renders BibTeX entries listed in `data/bibs/index.json`, including badges, date-aware ordering, tagged titles, featured-author highlighting, preview images, and paper descriptions.
 - Shared dark visual style in `css/style.css`, including responsive About and Papers layouts and a reduced-motion-safe animated light effect.
-- Local profile and resume assets kept under `assets/`.
+- Local profile, resume, and publication preview assets kept under `assets/`.
 - Dependency-free static files that can be served from any basic web server.
 
 ## Project Structure
@@ -17,7 +17,9 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 .
 |-- assets/
 |   |-- imgs/
-|   |   `-- headpic_512.png
+|   |   |-- ecogeo.png
+|   |   |-- headpic_512.png
+|   |   `-- kidgym.png
 |   `-- resumes/
 |       `-- YHW-Chinese-20260603.pdf
 |-- css/
@@ -62,4 +64,6 @@ Supported social link rendering currently includes GitHub-style icons through `j
 
 Add future papers as `.bib` files in `data/bibs/`, then add each file name to the `bibs` array in `data/bibs/index.json`. The Papers page reads BibTeX fields directly, uses date-like `status`, `date`, `publicationDate`, `releaseDate`, `venueYear`, or `year` values for ordering, and styles bracketed title tags such as `[ICLR'26]`.
 
-`url` and `doi` fields make paper titles clickable. `eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
+`url` and `doi` fields make paper titles clickable. Optional `image`, `thumbnail`, `preview`, or `teaser` fields render a paper preview image, and optional `description`, `abstract`, or `summary` fields render a short overview beside it. Use `imageAlt` or `alt` to override generated image alt text.
+
+`eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
