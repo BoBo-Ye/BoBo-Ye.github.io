@@ -10,6 +10,7 @@ const IGNORED_ENTRY_TYPES = new Set([
   "preamble",
   "string"
 ]);
+const FEATURED_AUTHOR = "Hengwei Ye";
 
 const formatAuthors = (authors) => {
   if (!Array.isArray(authors)) {
@@ -26,6 +27,74 @@ const formatAuthors = (authors) => {
 
   return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
 };
+
+const createAuthorName = (name) => {
+  const author = document.createElement("span");
+  author.textContent = name;
+
+  if (normalizeWhitespace(name) === FEATURED_AUTHOR) {
+    author.className = "paper-author-highlight";
+  }
+
+  return author;
+};
+
+const appendAuthors = (container, authors) => {
+  const names = authors.filter(Boolean);
+
+  names.forEach((name, index) => {
+    container.appendChild(createAuthorName(name));
+
+    if (names.length === 2 && index === 0) {
+      container.append(" and ");
+    } else if (names.length > 2 && index < names.length - 2) {
+      container.append(", ");
+    } else if (names.length > 2 && index === names.length - 2) {
+      container.append(", and ");
+    }
+  });
+};
+
+const appendTitleText = (container, titleText) => {
+  const match = titleText.match(/^\s*(\[[^\]]+\])\s*(.*)$/);
+
+  if (!match) {
+    container.textContent = titleText;
+    return;
+  }
+
+  const tag = document.createElement("span");
+  tag.className = "paper-title-tag";
+  tag.textContent = match[1];
+  container.appendChild(tag);
+
+  if (match[2]) {
+    container.append(` ${match[2]}`);
+  }
+};
+
+const parsePaperDate = (value) => {
+  if (!value) {
+    return 0;
+  }
+
+  const match = String(value).match(/(\d{4})(?:[-/](\d{1,2}))?(?:[-/](\d{1,2}))?/);
+  if (!match) {
+    return 0;
+  }
+
+  const year = Number(match[1]);
+  const month = Math.min(Math.max(Number(match[2] || 1), 1), 12);
+  const day = Math.min(Math.max(Number(match[3] || 1), 1), 31);
+  return Date.UTC(year, month - 1, day);
+};
+
+const getPaperSortDate = (paper) => Math.max(
+  parsePaperDate(paper.date),
+  parsePaperDate(paper.badge),
+  parsePaperDate(paper.venueYear),
+  parsePaperDate(paper.year)
+);
 
 const formatVenue = (paper) => {
   const venueParts = [
@@ -364,7 +433,14 @@ const createPaperFromBibEntry = ({ key, fields }) => ({
   title: fields.title || "",
   authors: parseAuthors(fields.author),
   year: fields.year || "",
+  date: getFirstField(fields, [
+    "date",
+    "publicationdate",
+    "releasedate"
+  ]),
   badge: getFirstField(fields, [
+    "status",
+    "publicationstatus",
     "badge",
     "venueshort",
     "shortvenue",
@@ -418,14 +494,14 @@ const createTitle = (paper) => {
     const link = document.createElement("a");
     link.className = "paper-title-link";
     link.href = paper.url;
-    link.textContent = paper.title;
+    appendTitleText(link, paper.title);
     link.target = "_blank";
     link.rel = "noreferrer";
     title.appendChild(link);
     return title;
   }
 
-  title.textContent = paper.title;
+  appendTitleText(title, paper.title);
   return title;
 };
 
@@ -448,7 +524,7 @@ const createPaper = (paper) => {
   if (authorsText) {
     const authors = document.createElement("p");
     authors.className = "paper-authors";
-    authors.textContent = authorsText;
+    appendAuthors(authors, paper.authors);
     content.appendChild(authors);
   }
 
@@ -460,11 +536,7 @@ const createPaper = (paper) => {
     content.appendChild(venue);
   }
 
-  const year = document.createElement("div");
-  year.className = "paper-year";
-  year.textContent = paper.year || paper.venueYear || "";
-
-  item.append(badge, content, year);
+  item.append(badge, content);
   return item;
 };
 
@@ -477,6 +549,9 @@ const renderPapers = (data) => {
   const fragment = document.createDocumentFragment();
   data.papers
     .filter((paper) => paper.title)
+    .sort((firstPaper, secondPaper) => (
+      getPaperSortDate(secondPaper) - getPaperSortDate(firstPaper)
+    ))
     .forEach((paper) => {
       fragment.appendChild(createPaper(paper));
     });

@@ -4,9 +4,35 @@ const iconPaths = {
 
 const setText = (selector, value) => {
   const element = document.querySelector(selector);
-  if (element && value) {
-    element.textContent = value;
+  if (!element) {
+    return;
   }
+
+  if (value) {
+    element.textContent = value;
+    element.hidden = false;
+  } else {
+    element.textContent = "";
+    element.hidden = true;
+  }
+};
+
+const appendResumeLink = (paragraph, resumeData) => {
+  if (!resumeData || !resumeData.label || !resumeData.url) {
+    return;
+  }
+
+  const anchor = document.createElement("a");
+  anchor.href = resumeData.url;
+  anchor.textContent = resumeData.label;
+  anchor.setAttribute("download", resumeData.download || "");
+  anchor.setAttribute("aria-label", "Download resume");
+
+  paragraph.append(
+    document.createTextNode(` ${resumeData.prefix || "Download my "}`),
+    anchor,
+    document.createTextNode(".")
+  );
 };
 
 const renderAbout = (about) => {
@@ -26,9 +52,13 @@ const renderAbout = (about) => {
   const bio = document.querySelector("[data-about-bio]");
   if (bio && Array.isArray(about.bio)) {
     bio.innerHTML = "";
-    about.bio.filter(Boolean).forEach((paragraph) => {
+    const paragraphs = about.bio.filter(Boolean);
+    paragraphs.forEach((paragraph, index) => {
       const p = document.createElement("p");
       p.textContent = paragraph;
+      if (index === paragraphs.length - 1) {
+        appendResumeLink(p, about.resume);
+      }
       bio.appendChild(p);
     });
   }
@@ -49,6 +79,67 @@ const renderAbout = (about) => {
       row.append(term, description);
       details.appendChild(row);
     });
+  }
+
+  const education = document.querySelector("[data-about-education]");
+  if (education && Array.isArray(about.education)) {
+    education.innerHTML = "";
+    about.education
+      .filter((item) => item.school || item.degree || item.period || item.description)
+      .forEach((item) => {
+        const article = document.createElement("article");
+        article.className = "education-item";
+
+        const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        icon.setAttribute("class", "education-icon");
+        icon.setAttribute("viewBox", "0 0 24 24");
+        icon.setAttribute("aria-hidden", "true");
+
+        const cap = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        cap.setAttribute("d", "M2 10.5 12 5l10 5.5-10 5.5-10-5.5Zm4 2.2v4.15c0 1.49 2.69 3.15 6 3.15s6-1.66 6-3.15V12.7l-6 3.3-6-3.3Z");
+        icon.appendChild(cap);
+
+        const content = document.createElement("div");
+        content.className = "education-content";
+
+        if (item.degree || item.period) {
+          const heading = document.createElement("div");
+          heading.className = "education-heading";
+
+          if (item.degree) {
+            const degree = document.createElement("h3");
+            degree.className = "education-degree";
+            degree.textContent = item.degree;
+            heading.appendChild(degree);
+          }
+
+          if (item.period) {
+            const period = document.createElement("span");
+            period.className = "education-period";
+            period.textContent = item.period;
+            heading.appendChild(period);
+          }
+
+          content.appendChild(heading);
+        }
+
+        if (item.school) {
+          const school = document.createElement("p");
+          school.className = "education-school";
+          school.textContent = item.school;
+          content.appendChild(school);
+        }
+
+        if (item.description) {
+          const description = document.createElement("p");
+          description.className = "education-description";
+          description.textContent = item.description;
+          content.appendChild(description);
+        }
+
+        article.append(icon, content);
+        education.appendChild(article);
+      });
   }
 
   const links = document.querySelector("[data-about-links]");

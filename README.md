@@ -1,13 +1,14 @@
 # BoBo Ye Personal Site
 
-A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Papers pages, shared styling, and local profile assets.
+A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Papers pages, shared styling, and local profile and resume assets.
 
 ## Features
 
 - Profile landing page with avatar and primary navigation.
-- About page that loads profile details from `data/about.json`.
-- Papers page that renders BibTeX entries listed in `data/bibs/index.json`.
-- Shared dark visual style in `css/style.css`, including a reduced-motion-safe animated light effect.
+- About page that loads profile details, education, resume link, and social links from `data/about.json`.
+- Papers page that renders BibTeX entries listed in `data/bibs/index.json`, including badges, date-aware ordering, tagged titles, and featured-author highlighting.
+- Shared dark visual style in `css/style.css`, including responsive About and Papers layouts and a reduced-motion-safe animated light effect.
+- Local profile and resume assets kept under `assets/`.
 - Dependency-free static files that can be served from any basic web server.
 
 ## Project Structure
@@ -15,8 +16,10 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 ```text
 .
 |-- assets/
-|   `-- imgs/
-|       `-- headpic_512.png
+|   |-- imgs/
+|   |   `-- headpic_512.png
+|   `-- resumes/
+|       `-- YHW-Chinese-20260603.pdf
 |-- css/
 |   `-- style.css
 |-- data/
@@ -49,10 +52,14 @@ Then open:
 
 ## Editing Profile Content
 
-Update `data/about.json` to change the profile name, avatar, headline, bio, details, and social links displayed on the About page.
+Update `data/about.json` to change the profile name, avatar, headline, bio, resume link, profile details, education history, and social links displayed on the About page.
+
+Resume downloads are configured through the `resume` object. Keep downloadable files in `assets/resumes/` and point `resume.url` to the matching asset path.
 
 Supported social link rendering currently includes GitHub-style icons through `js/about.js`. Additional link types can be added by extending the `iconPaths` map.
 
 ## Editing Papers
 
-Add future papers as `.bib` files in `data/bibs/`, then add each file name to the `bibs` array in `data/bibs/index.json`. The Papers page reads the BibTeX fields directly; `eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
+Add future papers as `.bib` files in `data/bibs/`, then add each file name to the `bibs` array in `data/bibs/index.json`. The Papers page reads BibTeX fields directly, uses date-like `status`, `date`, `publicationDate`, `releaseDate`, `venueYear`, or `year` values for ordering, and styles bracketed title tags such as `[ICLR'26]`.
+
+`url` and `doi` fields make paper titles clickable. `eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.

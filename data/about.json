@@ -1,30 +1,48 @@
 {
   "name": "BoBo Ye",
   "avatar": "assets/imgs/headpic_512.png",
-  "headline": "Hello World",
+  "headline": "",
   "bio": [
-    "Hi, I'm BoBo, a student developer exploring Agents. 👋 "
+    "Hi, I'm BoBo, a student developer exploring Agents. 👋 \n Looking for an internship!"
   ],
+  "resume": {
+    "prefix": "Download my ",
+    "label": "RESUME",
+    "url": "assets/resumes/YHW-Chinese-20260603.pdf",
+    "download": "YHW-Chinese-20260603.pdf"
+  },
   "details": [
+    {
+      "label": "Major",
+      "value": "Computer Science"
+    },
     {
       "label": "Location",
       "value": "Shanghai, China"
+    },
+    {
+      "label": "Phone",
+      "value": "(+86)13681986331"
     },
     {
       "label": "Email",
       "value": "yehw2024@shanghaitech.edu.cn"
     },
     {
-      "label": "Major",
-      "value": "Computer Science"
-    },
-    {
-      "label": "Currently",
-      "value": "Looking for an internship!"
-    },
-    {
       "label": "Interests",
       "value": "Coding, Swimming, MOBA Games"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Computer Science",
+      "period": "2024.09 - 2027.06",
+      "school": "ShanghaiTech University"
+    },
+    {
+      "degree": "Bachelor of Computer Science",
+      "period": "2020.09 - 2024.06",
+      "school": "ShanghaiTech University"
     }
   ],
   "links": [
