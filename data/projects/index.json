@@ -1,5 +1,15 @@
 {
-  "bibs": [
-    "GameMARL.bib"
+  "items": [
+    {
+      "title": "GameMARL: Multi-Agent Reinforcement Learning in Adversarial Game Environments",
+      "authors": [
+        "Hengwei Ye"
+      ],
+      "badge": "2024-06",
+      "url": "assets/docs/GameMARL.pdf",
+      "download": "GameMARL.pdf",
+      "image": "assets/imgs/GameMARL.png",
+      "description": "GameMARL explores multi-agent reinforcement learning in adversarial game environments, studying how agents learn coordinated policies under competitive pressure and evaluating training dynamics, strategy emergence, and robustness across game scenarios."
+    }
   ]
 }

@@ -18,11 +18,19 @@
     <section class="papers-content" aria-label="Papers">
       <div class="paper-list" data-papers-list></div>
       <p class="data-error" data-papers-error hidden>
-        Papers could not be loaded. Please run this site from a local server or check data/bibs/index.json.
+        Papers could not be loaded. Please run this site from a local server or check data/papers/index.json.
       </p>
     </section>
   </main>
 
-  <script src="js/papers.js"></script>
+  <script
+    type="module"
+    src="js/papers-page.js"
+    data-papers-page
+    data-index-path="data/papers/index.json"
+    data-list-selector="[data-papers-list]"
+    data-error-selector="[data-papers-error]"
+    data-page-label="papers"
+  ></script>
 </body>
 </html>

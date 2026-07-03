@@ -6,12 +6,12 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
-- Papers page that renders BibTeX entries listed in `data/bibs/index.json`, including badges, date-aware ordering, tagged titles, featured-author highlighting, preview images, and paper descriptions.
-- Projects page that reuses the BibTeX renderer with entries listed in `data/projects/index.json`, including local PDF downloads, preview images, badges, and descriptions.
+- Papers page that renders JSON entries from `data/papers/index.json`, including badges, badge-aware ordering, conference title tags, featured-author highlighting, preview images, and paper descriptions.
+- Projects page that reuses the papers renderer with JSON entries from `data/projects/index.json`, including local PDF downloads, preview images, badges, and descriptions.
 - Blogs page that opens as a four-column card catalog and renders Markdown files listed in `data/blogs/index.json`, including front matter, tags, code blocks, lists, block quotes, links, and images.
 - Shared dark visual style in `css/style.css`, including responsive About, Blogs, Papers, and Projects layouts and a reduced-motion-safe animated light effect.
 - Local image, resume, and project document assets kept under `assets/`, with PNG and PDF files tracked through Git LFS.
-- Dependency-free static files that can be served from any basic web server.
+- Dependency-free ES module static files that can be served from any basic web server.
 
 ## Project Structure
 
@@ -30,30 +30,31 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 |   `-- style.css
 |-- data/
 |   |-- about.json
-|   |-- bibs/
-|   |   |-- index.json
-|   |   `-- *.bib
 |   |-- blogs/
 |   |   |-- index.json
 |   |   `-- *.md
+|   |-- papers/
+|   |   `-- index.json
 |   `-- projects/
-|       |-- index.json
-|       `-- *.bib
+|       `-- index.json
 |-- html/
 |   |-- about.html
 |   |-- blog.html
 |   |-- papers.html
 |   `-- projects.html
 |-- js/
-|   |-- about.js
-|   |-- blog.js
-|   `-- papers.js
+|   |-- about-page.js
+|   |-- blog-page.js
+|   |-- papers-page.js
+|   |-- blog/
+|   |-- papers/
+|   `-- shared/
 `-- index.html
 ```
 
 ## Run Locally
 
-This is a dependency-free static site. Because the About, Blogs, Papers, and Projects pages fetch JSON, Markdown, and BibTeX files, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
+This is a dependency-free static site. Because the About, Blogs, Papers, and Projects pages fetch JSON, Markdown, and JavaScript modules, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
 
 ```bash
 python -m http.server 8000
@@ -73,23 +74,33 @@ Update `data/about.json` to change the profile name, avatar, headline, bio, resu
 
 Resume downloads are configured through the `resume` object. Keep downloadable files in `assets/docs/` and point `resume.url` to the matching asset path.
 
-Supported social link rendering currently includes GitHub-style icons through `js/about.js`. Additional link types can be added by extending the `iconPaths` map.
+Supported social link rendering currently includes GitHub-style icons through `js/about-page.js`. Additional link types can be added by extending the `iconPaths` map.
 
 ## Editing Papers
 
-Add future papers as `.bib` files in `data/bibs/`, then add each file name to the `bibs` array in `data/bibs/index.json`. The Papers page reads BibTeX fields directly, uses date-like `status`, `date`, `publicationDate`, `releaseDate`, `venueYear`, or `year` values for ordering, and styles bracketed title tags such as `[ICLR'26]`.
+Add future papers as objects in the `items` array in `data/papers/index.json`. The Papers page sorts entries by the date-like `badge` field, newest first.
 
-`url` and `doi` fields make paper titles clickable. Optional `image`, `thumbnail`, `preview`, or `teaser` fields render a paper preview image, and optional `description`, `abstract`, or `summary` fields render a short overview beside it. Use `imageAlt` or `alt` to override generated image alt text.
+Use `conference` for the title tag. Leave it empty when there is no conference tag; when present, the page renders it as a highlighted bracketed label before the title.
 
-`eprint`, `archivePrefix`, and `primaryClass` are ignored on the webpage.
+```json
+{
+  "conference": "ICLR'26",
+  "title": "Example Paper Title",
+  "authors": ["Hengwei Ye", "Coauthor Name"],
+  "badge": "2026-01",
+  "url": "https://example.com/paper",
+  "image": "assets/imgs/example.png",
+  "description": "Short paper description."
+}
+```
 
 ## Editing Projects
 
-Add project entries as `.bib` files in `data/projects/`, then add each file name to the `bibs` array in `data/projects/index.json`.
+Add project entries as objects in the `items` array in `data/projects/index.json`.
 
-The Projects page uses the same BibTeX renderer as Papers with authors hidden. Point `url` to a local PDF in `assets/docs/` when the project should download a document, and add `download` to suggest the downloaded file name.
+The Projects page uses the same papers renderer as Papers with authors hidden. Point `url` to a local PDF in `assets/docs/` when the project should download a document, and add `download` to suggest the downloaded file name.
 
-Project entries support the same `image`, `imageAlt`, `description`, badge, date, and venue-style fields as paper entries.
+Project entries support the same `title`, `badge`, `url`, `image`, and `description` fields as paper entries.
 
 ## Large Assets
 
