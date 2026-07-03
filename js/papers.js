@@ -1,5 +1,10 @@
-const BIB_INDEX_PATH = "data/bibs/index.json";
-const BIBS_BASE_PATH = "data/bibs/";
+const scriptConfig = document.currentScript?.dataset || {};
+const BIB_INDEX_PATH = scriptConfig.indexPath || "data/bibs/index.json";
+const BIBS_BASE_PATH = scriptConfig.bibsBasePath || "data/bibs/";
+const LIST_SELECTOR = scriptConfig.listSelector || "[data-papers-list]";
+const ERROR_SELECTOR = scriptConfig.errorSelector || "[data-papers-error]";
+const PAGE_LABEL = scriptConfig.pageLabel || "papers";
+const SHOW_AUTHORS = scriptConfig.showAuthors !== "false";
 const IGNORED_BIB_FIELDS = new Set([
   "eprint",
   "archiveprefix",
@@ -478,6 +483,11 @@ const createPaperFromBibEntry = ({ key, fields }) => ({
     "abstract",
     "summary"
   ]),
+  download: getFirstField(fields, [
+    "download",
+    "downloadfile",
+    "filename"
+  ]),
   url: fields.url || (fields.doi ? `https://doi.org/${fields.doi}` : "")
 });
 
@@ -510,8 +520,12 @@ const createTitle = (paper) => {
     link.className = "paper-title-link";
     link.href = paper.url;
     appendTitleText(link, paper.title);
-    link.target = "_blank";
-    link.rel = "noreferrer";
+    if (paper.download) {
+      link.setAttribute("download", paper.download);
+    } else {
+      link.target = "_blank";
+      link.rel = "noreferrer";
+    }
     title.appendChild(link);
     return title;
   }
@@ -568,7 +582,7 @@ const createPaper = (paper) => {
   content.className = "paper-content";
   content.appendChild(createTitle(paper));
 
-  const authorsText = formatAuthors(paper.authors);
+  const authorsText = SHOW_AUTHORS ? formatAuthors(paper.authors) : "";
   if (authorsText) {
     const authors = document.createElement("p");
     authors.className = "paper-authors";
@@ -593,14 +607,14 @@ const createPaper = (paper) => {
   return item;
 };
 
-const renderPapers = (data) => {
-  const list = document.querySelector("[data-papers-list]");
-  if (!list || !Array.isArray(data.papers)) {
+const renderPapers = (papers) => {
+  const list = document.querySelector(LIST_SELECTOR);
+  if (!list || !Array.isArray(papers)) {
     return;
   }
 
   const fragment = document.createDocumentFragment();
-  data.papers
+  papers
     .filter((paper) => paper.title)
     .sort((firstPaper, secondPaper) => (
       getPaperSortDate(secondPaper) - getPaperSortDate(firstPaper)
@@ -614,32 +628,34 @@ const renderPapers = (data) => {
 };
 
 const showPapersError = () => {
-  const error = document.querySelector("[data-papers-error]");
+  const error = document.querySelector(ERROR_SELECTOR);
   if (error) {
     error.hidden = false;
   }
 };
 
-const fetchText = (path) => fetch(path).then((response) => {
+const fetchOptions = { cache: "no-cache" };
+
+const fetchText = (path) => fetch(path, fetchOptions).then((response) => {
   if (!response.ok) {
     throw new Error(`Unable to load ${path}.`);
   }
   return response.text();
 });
 
-fetch(BIB_INDEX_PATH)
+fetch(BIB_INDEX_PATH, fetchOptions)
   .then((response) => {
     if (!response.ok) {
-      throw new Error("Unable to load papers bib index.");
+      throw new Error(`Unable to load ${PAGE_LABEL} bib index.`);
     }
     return response.json();
   })
   .then(getBibPaths)
   .then((bibPaths) => Promise.all(bibPaths.map(fetchText)))
-  .then((bibTexts) => ({
-    papers: bibTexts
+  .then((bibTexts) => (
+    bibTexts
       .flatMap(parseBibEntries)
       .map(createPaperFromBibEntry)
-  }))
+  ))
   .then(renderPapers)
   .catch(showPapersError);

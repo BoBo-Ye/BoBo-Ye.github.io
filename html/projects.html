@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects - BoBo Ye</title>
+  <base href="../">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="projects-body">
+  <main class="projects-page">
+    <a class="back-link" href="index.html" aria-label="Back to home">Home</a>
+
+    <header class="page-header">
+      <h1>Projects</h1>
+    </header>
+
+    <section class="projects-content" aria-label="Projects">
+      <div class="paper-list" data-projects-list></div>
+      <p class="data-error" data-projects-error hidden>
+        Projects could not be loaded. Please run this site from a local server or check data/projects/index.json.
+      </p>
+    </section>
+  </main>
+
+  <script
+    src="js/papers.js"
+    data-index-path="data/projects/index.json"
+    data-bibs-base-path="data/projects/"
+    data-list-selector="[data-projects-list]"
+    data-error-selector="[data-projects-error]"
+    data-page-label="projects"
+    data-show-authors="false"
+  ></script>
+</body>
+</html>
