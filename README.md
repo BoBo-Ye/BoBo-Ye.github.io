@@ -6,9 +6,9 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
-- Papers page that renders JSON entries from `data/papers/index.json`, including badges, badge-aware ordering, conference title tags, featured-author highlighting, preview images, and paper descriptions.
-- Projects page that reuses the papers renderer with JSON entries from `data/projects/index.json`, including local PDF downloads, preview images, badges, and descriptions.
-- Blogs page that opens as a four-column card catalog and renders Markdown files listed in `data/blogs/index.json`, including front matter, tags, code blocks, lists, block quotes, links, and images.
+- Papers page that renders JSON entries from `data/papers/index.json`, including time labels, time-aware ordering, conference title tags, featured-author highlighting, preview images, and paper descriptions.
+- Projects page that reuses the papers renderer with JSON entries from `data/projects/index.json`, including local PDF downloads, preview images, time labels, and descriptions.
+- Blogs page that opens as a collection-style index with post cards, tag/status sidebar filters, and Markdown files listed in `data/blogs/index.json`. Each post renders with a sticky table-of-contents sidebar and supports front matter, status labels, tags, code blocks, lists, block quotes, links, and images.
 - Shared dark visual style in `css/style.css`, including responsive About, Blogs, Papers, and Projects layouts and a reduced-motion-safe animated light effect.
 - Local image, resume, and project document assets kept under `assets/`, with PNG and PDF files tracked through Git LFS.
 - Dependency-free ES module static files that can be served from any basic web server.
@@ -78,7 +78,7 @@ Supported social link rendering currently includes GitHub-style icons through `j
 
 ## Editing Papers
 
-Add future papers as objects in the `items` array in `data/papers/index.json`. The Papers page sorts entries by the date-like `badge` field, newest first.
+Add future papers as objects in the `items` array in `data/papers/index.json`. The Papers page sorts entries by the date-like `time` field, newest first.
 
 Use `conference` for the title tag. Leave it empty when there is no conference tag; when present, the page renders it as a highlighted bracketed label before the title.
 
@@ -87,7 +87,7 @@ Use `conference` for the title tag. Leave it empty when there is no conference t
   "conference": "ICLR'26",
   "title": "Example Paper Title",
   "authors": ["Hengwei Ye", "Coauthor Name"],
-  "badge": "2026-01",
+  "time": "2026-01",
   "url": "https://example.com/paper",
   "image": "assets/imgs/example.png",
   "description": "Short paper description."
@@ -100,7 +100,7 @@ Add project entries as objects in the `items` array in `data/projects/index.json
 
 The Projects page uses the same papers renderer as Papers with authors hidden. Point `url` to a local PDF in `assets/docs/` when the project should download a document, and add `download` to suggest the downloaded file name.
 
-Project entries support the same `title`, `badge`, `url`, `image`, and `description` fields as paper entries.
+Project entries support the same `title`, `time`, `url`, `image`, and `description` fields as paper entries.
 
 ## Large Assets
 
@@ -113,9 +113,8 @@ Add blog posts as `.md` files in `data/blogs/`, then list each file in `data/blo
 ```json
 {
   "posts": [
-    {
-      "file": "welcome.md"
-    }
+    "welcome.md",
+    "my-new-note.md"
   ]
 }
 ```
@@ -128,6 +127,7 @@ title: Blog Template Notes
 date: 2026-07-02
 summary: A short intro for the post list and article header.
 tags: [Site, Markdown]
+status: Completed
 ---
 
 ## Your first section
@@ -136,3 +136,5 @@ Write the post body here.
 ```
 
 Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, bold and italic text, horizontal rules, and fenced code blocks.
+
+The optional `status` field is shown as the blog index badge and grouped in the sidebar. Supported values are `Completed`, `Writing`, and `TODO`; matching is case-insensitive, and posts without this field use `Completed`.

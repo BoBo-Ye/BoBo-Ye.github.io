@@ -71,7 +71,7 @@ export const normalizePaper = (entry) => {
     title: normalizeField(source.title),
     conference: normalizeConference(source.conference),
     authors: normalizeAuthors(source.authors),
-    badge: normalizeField(source.badge),
+    time: normalizeField(source.time),
     image: normalizeField(source.image),
     description: normalizeField(source.description),
     download: normalizeField(source.download),
@@ -79,7 +79,7 @@ export const normalizePaper = (entry) => {
   };
 };
 
-export const getPaperSortDate = (paper) => parseLooseDate(paper.badge);
+export const getPaperSortDate = (paper) => parseLooseDate(paper.time);
 
 export const sortPapers = (papers) => (
   [...papers].sort((firstPaper, secondPaper) => (

@@ -2,10 +2,7 @@
   "items": [
     {
       "title": "GameMARL: Multi-Agent Reinforcement Learning in Adversarial Game Environments",
-      "authors": [
-        "Hengwei Ye"
-      ],
-      "badge": "2024-06",
+      "time": "2024-06",
       "url": "assets/docs/GameMARL.pdf",
       "download": "GameMARL.pdf",
       "image": "assets/imgs/GameMARL.png",

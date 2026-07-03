@@ -15,7 +15,7 @@
         "Yingna Wu",
         "Zheng Tian*"
       ],
-      "badge": "2026-01",
+      "time": "2026-01",
       "url": "https://arxiv.org/abs/2603.20209",
       "image": "assets/imgs/kidgym.png",
       "description": "This work introduces KidGym, a comprehensive 2D grid-based benchmark for assessing five essential capabilities of MLLMs: Execution, Perception Reasoning, Learning, Memory and Planning, and identifies significant insights into model capabilities and revealed several limitations of current models."
@@ -29,7 +29,7 @@
         "Zhenhan Guan",
         "Zheng Tian*"
       ],
-      "badge": "2026-05",
+      "time": "2026-05",
       "url": "https://arxiv.org/abs/2605.12887",
       "image": "assets/imgs/ecogeo.png",
       "description": "The proposed TRACE, a Trajectory-Aware Coordinated Evidence Ecosystem, supports an ecosystem research paradigm for GEO, where web-enabled LLM agents are studied in relation to the broader evidence environments that guide search, browsing, and answer synthesis."

@@ -1,7 +1,5 @@
 {
   "posts": [
-    {
-      "file": "welcome.md"
-    }
+    "welcome.md"
   ]
 }

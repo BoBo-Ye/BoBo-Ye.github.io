@@ -5,6 +5,10 @@ summary: A small Markdown-powered blog entry for the personal site.
 tags: [Site, Markdown]
 ---
 
+# aaa
+
+## sss 
+
 ## A quiet place for notes
 
 This page is powered by a plain Markdown file under `data/blogs/`. Add a new `.md` file, list it in `data/blogs/index.json`, and the blog page will render it with the same visual rhythm as the rest of the site.

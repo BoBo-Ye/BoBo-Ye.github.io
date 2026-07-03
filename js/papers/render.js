@@ -102,9 +102,9 @@ const createPaper = (paper, options) => {
   const item = document.createElement("article");
   item.className = "paper-item";
 
-  const badge = document.createElement("span");
-  badge.className = "paper-badge";
-  badge.textContent = paper.badge;
+  const time = document.createElement("span");
+  time.className = "paper-time";
+  time.textContent = paper.time;
 
   const content = document.createElement("div");
   content.className = "paper-content";
@@ -122,7 +122,7 @@ const createPaper = (paper, options) => {
     content.appendChild(overview);
   }
 
-  item.append(badge, content);
+  item.append(time, content);
   return item;
 };
 
