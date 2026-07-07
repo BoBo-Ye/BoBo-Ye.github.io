@@ -113,11 +113,12 @@ Add blog posts as `.md` files in `data/blogs/`, then list each file in `data/blo
 ```json
 {
   "posts": [
-    "welcome.md",
-    "my-new-note.md"
+    "科研实用工具合集.md"
   ]
 }
 ```
+
+Markdown files can also live in `data/blogs/` as drafts or templates; only files listed in `data/blogs/index.json` appear on the Blogs page.
 
 Each Markdown post can include front matter:
 
@@ -135,6 +136,6 @@ status: Completed
 Write the post body here.
 ```
 
-Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, bold and italic text, horizontal rules, and fenced code blocks.
+Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, highlighted bold text, italic text, horizontal rules, and fenced code blocks.
 
-The optional `status` field is shown as the blog index badge and grouped in the sidebar. Supported values are `Completed`, `Writing`, and `TODO`; matching is case-insensitive, and posts without this field use `Completed`.
+The optional `status` field is shown as the blog index badge and grouped in the sidebar. Supported values are `Completed`, `Updating`, and `TODO`; matching is case-insensitive, and posts without this field use `Completed`.

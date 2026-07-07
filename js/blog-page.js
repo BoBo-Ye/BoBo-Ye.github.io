@@ -23,7 +23,7 @@ const BLOG_INDEX_PATH = "data/blogs/index.json";
 const BLOGS_BASE_PATH = "data/blogs/";
 const BLOG_STATUSES = [
   { value: "completed", label: "Completed" },
-  { value: "writing", label: "Writing" },
+  { value: "updating", label: "Updating" },
   { value: "todo", label: "TODO" }
 ];
 const BLOG_STATUS_VALUES = BLOG_STATUSES.map((status) => status.value);
@@ -129,9 +129,9 @@ const normalizeStatus = (value) => {
   const aliases = {
     complete: "completed",
     done: "completed",
-    doing: "writing",
-    draft: "writing",
-    wip: "writing",
+    doing: "updating",
+    draft: "updating",
+    wip: "updating",
     "to-do": "todo"
   };
 

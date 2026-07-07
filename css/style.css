@@ -215,7 +215,7 @@ a {
   background: rgba(64, 96, 108, .66);
   color: #e4f1f4;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   text-align: center;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
@@ -382,7 +382,7 @@ a {
   color: #cbe8cf;
 }
 
-.blog-card-status[data-status="writing"] {
+.blog-card-status[data-status="updating"] {
   border-color: rgba(205, 169, 90, .36);
   background: rgba(126, 103, 47, .34);
   color: #ead9a8;
@@ -542,7 +542,7 @@ a {
   box-shadow: 0 0 8px rgba(127, 189, 143, .28);
 }
 
-.blog-status-button[data-status="writing"] .blog-status-dot {
+.blog-status-button[data-status="updating"] .blog-status-dot {
   background: #d3b05e;
   box-shadow: 0 0 8px rgba(211, 176, 94, .26);
 }
@@ -707,8 +707,16 @@ a {
 
 .markdown-content {
   color: #d4d4d4;
+  font-family: "Helvetica Neue", "Microsoft YaHei UI", Arial, sans-serif;
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.68;
+}
+
+.markdown-content strong,
+.markdown-content b {
+  color: #d9b66a;
+  font-weight: 700;
 }
 
 .markdown-content h1,

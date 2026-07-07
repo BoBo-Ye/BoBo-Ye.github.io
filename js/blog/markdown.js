@@ -23,9 +23,9 @@ const renderInline = (value) => {
       const titleAttribute = title ? ` title="${escapeAttribute(title)}"` : "";
       return `<a href="${escapeAttribute(safeUrl(url))}"${titleAttribute}>${text}</a>`;
     })
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>&lt;$1&gt;</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/__([^_]+)__/g, "<strong>$1</strong>")
+    .replace(/__([^_]+)__/g, "<strong>&lt;$1&gt;</strong>")
     .replace(/_([^_]+)_/g, "<em>$1</em>");
 
   codeSpans.forEach((code, index) => {
