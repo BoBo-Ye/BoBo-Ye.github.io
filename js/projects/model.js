@@ -3,7 +3,6 @@ import { normalizeWhitespace } from "../shared/text.js";
 
 const DEFAULT_ITEM_KEYS = [
   "items",
-  "papers",
   "projects"
 ];
 
@@ -37,11 +36,11 @@ const normalizeAuthors = (authors) => {
   return [];
 };
 
-const normalizeConference = (conference) => normalizeField(conference)
+const normalizeTag = (tag) => normalizeField(tag)
   .replace(/^\[+/, "")
   .replace(/\]+$/, "");
 
-export const readPaperItems = (data, preferredKey = "") => {
+export const readProjectItems = (data, preferredKey = "") => {
   if (Array.isArray(data)) {
     return data;
   }
@@ -64,12 +63,12 @@ export const readPaperItems = (data, preferredKey = "") => {
   return [];
 };
 
-export const normalizePaper = (entry) => {
+export const normalizeProject = (entry) => {
   const source = entry && typeof entry === "object" ? entry : {};
 
   return {
     title: normalizeField(source.title),
-    conference: normalizeConference(source.conference),
+    conference: normalizeTag(source.conference || source.tag),
     authors: normalizeAuthors(source.authors),
     time: normalizeField(source.time),
     image: normalizeField(source.image),
@@ -79,10 +78,10 @@ export const normalizePaper = (entry) => {
   };
 };
 
-export const getPaperSortDate = (paper) => parseLooseDate(paper.time);
+export const getProjectSortDate = (project) => parseLooseDate(project.time);
 
-export const sortPapers = (papers) => (
-  [...papers].sort((firstPaper, secondPaper) => (
-    getPaperSortDate(secondPaper) - getPaperSortDate(firstPaper)
+export const sortProjects = (projects) => (
+  [...projects].sort((firstProject, secondProject) => (
+    getProjectSortDate(secondProject) - getProjectSortDate(firstProject)
   ))
 );

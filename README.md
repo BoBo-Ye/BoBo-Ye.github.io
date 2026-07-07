@@ -1,15 +1,14 @@
 # BoBo Ye Personal Site
 
-A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About, Papers, and Projects pages, a Markdown-powered Blogs page, shared styling, and local profile, preview, and document assets.
+A small static personal homepage for BoBo Ye. The site includes a profile landing page, data-driven About and Projects pages, a Markdown-powered Blogs page, shared styling, and local profile, preview, and document assets.
 
 ## Features
 
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
-- Papers page that renders JSON entries from `data/papers/index.json`, including time labels, time-aware ordering, conference title tags, featured-author highlighting, preview images, and paper descriptions.
-- Projects page that reuses the papers renderer with JSON entries from `data/projects/index.json`, including local PDF downloads, preview images, time labels, and descriptions.
+- Projects page that renders JSON entries from `data/projects/index.json`, including time labels, time-aware ordering, title tags, author highlighting, preview images, descriptions, external paper links, and local PDF downloads.
 - Blogs page that opens as a collection-style index with post cards, tag/status sidebar filters, and Markdown files listed in `data/blogs/index.json`. Each post renders with a sticky table-of-contents sidebar and supports front matter, status labels, tags, code blocks, lists, block quotes, links, and images.
-- Shared dark visual style in `css/style.css`, including responsive About, Blogs, Papers, and Projects layouts and a reduced-motion-safe animated light effect.
+- Shared dark visual style in `css/style.css`, including responsive About, Projects, and Blogs layouts and a reduced-motion-safe animated light effect.
 - Local image, resume, and project document assets kept under `assets/`, with PNG and PDF files tracked through Git LFS.
 - Dependency-free ES module static files that can be served from any basic web server.
 
@@ -19,7 +18,7 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 .
 |-- assets/
 |   |-- docs/
-|   |   |-- GameMARL.pdf
+|   |   |-- AdversarialGameMARL.pdf
 |   |   `-- YHW-Chinese-20260603.pdf
 |   `-- imgs/
 |       |-- GameMARL.png
@@ -33,28 +32,25 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 |   |-- blogs/
 |   |   |-- index.json
 |   |   `-- *.md
-|   |-- papers/
-|   |   `-- index.json
 |   `-- projects/
 |       `-- index.json
 |-- html/
 |   |-- about.html
 |   |-- blog.html
-|   |-- papers.html
 |   `-- projects.html
 |-- js/
 |   |-- about-page.js
 |   |-- blog-page.js
-|   |-- papers-page.js
+|   |-- projects-page.js
 |   |-- blog/
-|   |-- papers/
+|   |-- projects/
 |   `-- shared/
 `-- index.html
 ```
 
 ## Run Locally
 
-This is a dependency-free static site. Because the About, Blogs, Papers, and Projects pages fetch JSON, Markdown, and JavaScript modules, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
+This is a dependency-free static site. Because the About, Projects, and Blogs pages fetch JSON, Markdown, and JavaScript modules, serve the directory with a local web server instead of opening the HTML files directly from the filesystem.
 
 ```bash
 python -m http.server 8000
@@ -65,7 +61,6 @@ Then open:
 - Home: `http://localhost:8000/`
 - About: `http://localhost:8000/html/about.html`
 - Blogs: `http://localhost:8000/html/blog.html`
-- Papers: `http://localhost:8000/html/papers.html`
 - Projects: `http://localhost:8000/html/projects.html`
 
 ## Editing Profile Content
@@ -76,11 +71,11 @@ Resume downloads are configured through the `resume` object. Keep downloadable f
 
 Supported social link rendering currently includes GitHub-style icons through `js/about-page.js`. Additional link types can be added by extending the `iconPaths` map.
 
-## Editing Papers
+## Editing Projects
 
-Add future papers as objects in the `items` array in `data/papers/index.json`. The Papers page sorts entries by the date-like `time` field, newest first.
+Add future research and project entries as objects in the `items` array in `data/projects/index.json`. The Projects page sorts entries by the date-like `time` field, newest first, and highlights `Hengwei Ye` in the author list by default.
 
-Use `conference` for the title tag. Leave it empty when there is no conference tag; when present, the page renders it as a highlighted bracketed label before the title.
+Use `conference` for the title tag. Leave it empty when there is no venue, status, or project-category tag; when present, the page renders it as a highlighted bracketed label before the title.
 
 ```json
 {
@@ -94,13 +89,9 @@ Use `conference` for the title tag. Leave it empty when there is no conference t
 }
 ```
 
-## Editing Projects
+For local PDFs, point `url` to a file in `assets/docs/` and add `download` to suggest the downloaded file name. For external links, use the target URL and omit `download`.
 
-Add project entries as objects in the `items` array in `data/projects/index.json`.
-
-The Projects page uses the same papers renderer as Papers with authors hidden. Point `url` to a local PDF in `assets/docs/` when the project should download a document, and add `download` to suggest the downloaded file name.
-
-Project entries support the same `title`, `time`, `url`, `image`, and `description` fields as paper entries.
+Project entries support `conference`, `title`, `authors`, `time`, `url`, `download`, `image`, and `description`.
 
 ## Large Assets
 
@@ -113,7 +104,8 @@ Add blog posts as `.md` files in `data/blogs/`, then list each file in `data/blo
 ```json
 {
   "posts": [
-    "科研实用工具合集.md"
+    "科研实用工具合集.md",
+    "个人云服务器搭建.md"
   ]
 }
 ```

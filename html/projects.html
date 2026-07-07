@@ -16,7 +16,7 @@
     </header>
 
     <section class="projects-content" aria-label="Projects">
-      <div class="paper-list" data-projects-list></div>
+      <div class="project-list" data-projects-list></div>
       <p class="data-error" data-projects-error hidden>
         Projects could not be loaded. Please run this site from a local server or check data/projects/index.json.
       </p>
@@ -25,13 +25,12 @@
 
   <script
     type="module"
-    src="js/papers-page.js"
-    data-papers-page
+    src="js/projects-page.js"
+    data-projects-page
     data-index-path="data/projects/index.json"
     data-list-selector="[data-projects-list]"
     data-error-selector="[data-projects-error]"
     data-page-label="projects"
-    data-show-authors="false"
   ></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 import { normalizeWhitespace } from "../shared/text.js";
-import { sortPapers } from "./model.js";
+import { sortProjects } from "./model.js";
 
 const DEFAULT_FEATURED_AUTHOR = "Hengwei Ye";
 
@@ -8,7 +8,7 @@ const createAuthorName = (name, featuredAuthor) => {
   author.textContent = name;
 
   if (normalizeWhitespace(name) === featuredAuthor) {
-    author.className = "paper-author-highlight";
+    author.className = "project-author-highlight";
   }
 
   return author;
@@ -30,29 +30,29 @@ const appendAuthors = (container, authors, featuredAuthor) => {
   });
 };
 
-const appendTitleText = (container, paper) => {
-  if (paper.conference) {
+const appendTitleText = (container, project) => {
+  if (project.conference) {
     const tag = document.createElement("span");
-    tag.className = "paper-title-tag";
-    tag.textContent = `[${paper.conference}]`;
+    tag.className = "project-title-tag";
+    tag.textContent = `[${project.conference}]`;
     container.appendChild(tag);
     container.append(" ");
   }
 
-  container.append(paper.title);
+  container.append(project.title);
 };
 
-const createTitle = (paper) => {
+const createTitle = (project) => {
   const title = document.createElement("h2");
-  title.className = "paper-title";
+  title.className = "project-title";
 
-  if (paper.url) {
+  if (project.url) {
     const link = document.createElement("a");
-    link.className = "paper-title-link";
-    link.href = paper.url;
-    appendTitleText(link, paper);
-    if (paper.download) {
-      link.setAttribute("download", paper.download);
+    link.className = "project-title-link";
+    link.href = project.url;
+    appendTitleText(link, project);
+    if (project.download) {
+      link.setAttribute("download", project.download);
     } else {
       link.target = "_blank";
       link.rel = "noreferrer";
@@ -61,26 +61,26 @@ const createTitle = (paper) => {
     return title;
   }
 
-  appendTitleText(title, paper);
+  appendTitleText(title, project);
   return title;
 };
 
-const createOverview = (paper) => {
-  if (!paper.image && !paper.description) {
+const createOverview = (project) => {
+  if (!project.image && !project.description) {
     return null;
   }
 
   const overview = document.createElement("div");
-  overview.className = "paper-overview";
+  overview.className = "project-overview";
 
-  if (paper.image) {
+  if (project.image) {
     const figure = document.createElement("figure");
-    figure.className = "paper-figure";
+    figure.className = "project-figure";
 
     const image = document.createElement("img");
-    image.className = "paper-image";
-    image.src = paper.image;
-    image.alt = `${paper.title} preview`;
+    image.className = "project-image";
+    image.src = project.image;
+    image.alt = `${project.title} preview`;
     image.loading = "lazy";
     image.decoding = "async";
 
@@ -88,36 +88,36 @@ const createOverview = (paper) => {
     overview.appendChild(figure);
   }
 
-  if (paper.description) {
+  if (project.description) {
     const description = document.createElement("p");
-    description.className = "paper-description";
-    description.textContent = paper.description;
+    description.className = "project-description";
+    description.textContent = project.description;
     overview.appendChild(description);
   }
 
   return overview;
 };
 
-const createPaper = (paper, options) => {
+const createProject = (project, options) => {
   const item = document.createElement("article");
-  item.className = "paper-item";
+  item.className = "project-item";
 
   const time = document.createElement("span");
-  time.className = "paper-time";
-  time.textContent = paper.time;
+  time.className = "project-time";
+  time.textContent = project.time;
 
   const content = document.createElement("div");
-  content.className = "paper-content";
-  content.appendChild(createTitle(paper));
+  content.className = "project-content";
+  content.appendChild(createTitle(project));
 
-  if (options.showAuthors && paper.authors.length) {
+  if (options.showAuthors && project.authors.length) {
     const authors = document.createElement("p");
-    authors.className = "paper-authors";
-    appendAuthors(authors, paper.authors, options.featuredAuthor);
+    authors.className = "project-authors";
+    appendAuthors(authors, project.authors, options.featuredAuthor);
     content.appendChild(authors);
   }
 
-  const overview = createOverview(paper);
+  const overview = createOverview(project);
   if (overview) {
     content.appendChild(overview);
   }
@@ -126,9 +126,9 @@ const createPaper = (paper, options) => {
   return item;
 };
 
-export const renderPapers = (papers, options = {}) => {
-  const list = document.querySelector(options.listSelector || "[data-papers-list]");
-  if (!list || !Array.isArray(papers)) {
+export const renderProjects = (projects, options = {}) => {
+  const list = document.querySelector(options.listSelector || "[data-projects-list]");
+  if (!list || !Array.isArray(projects)) {
     return;
   }
 
@@ -138,10 +138,10 @@ export const renderPapers = (papers, options = {}) => {
   };
 
   const fragment = document.createDocumentFragment();
-  sortPapers(papers)
-    .filter((paper) => paper.title)
-    .forEach((paper) => {
-      fragment.appendChild(createPaper(paper, renderOptions));
+  sortProjects(projects)
+    .filter((project) => project.title)
+    .forEach((project) => {
+      fragment.appendChild(createProject(project, renderOptions));
     });
 
   list.replaceChildren(fragment);
