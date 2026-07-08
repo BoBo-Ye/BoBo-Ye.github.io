@@ -421,9 +421,24 @@ const loadPosts = (configs) => Promise.all(
   ))
 );
 
+const ensureUniquePostSlugs = (posts) => {
+  const seen = new Map();
+
+  return posts.map((post) => {
+    const baseSlug = post.slug || "post";
+    const count = seen.get(baseSlug) || 0;
+    seen.set(baseSlug, count + 1);
+
+    return count
+      ? { ...post, slug: `${baseSlug}-${count + 1}` }
+      : post;
+  });
+};
+
 fetchJson(BLOG_INDEX_PATH, "Unable to load blog index.")
   .then(readIndexPosts)
   .then(loadPosts)
+  .then(ensureUniquePostSlugs)
   .then((posts) => posts.sort((firstPost, secondPost) => (
     parseDateValue(secondPost.date) - parseDateValue(firstPost.date)
   )))

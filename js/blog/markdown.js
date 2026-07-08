@@ -69,6 +69,102 @@ const closeOpenBlocks = (state, html) => {
   closeList(state, html);
 };
 
+const splitTableRow = (line) => {
+  const trimmed = line.trim();
+  if (!trimmed.includes("|")) {
+    return null;
+  }
+
+  let row = trimmed;
+  if (row.startsWith("|")) {
+    row = row.slice(1);
+  }
+  if (row.endsWith("|")) {
+    row = row.slice(0, -1);
+  }
+
+  const cells = [];
+  let cell = "";
+
+  for (let index = 0; index < row.length; index += 1) {
+    const character = row[index];
+    if (character === "\\" && row[index + 1] === "|") {
+      cell += "|";
+      index += 1;
+      continue;
+    }
+
+    if (character === "|") {
+      cells.push(cell.trim());
+      cell = "";
+      continue;
+    }
+
+    cell += character;
+  }
+
+  cells.push(cell.trim());
+  return cells.length > 1 ? cells : null;
+};
+
+const isTableDividerCell = (cell) => /^:?-{3,}:?$/.test(cell.replace(/\s+/g, ""));
+
+const isTableDivider = (line) => {
+  const cells = splitTableRow(line);
+  return Boolean(cells?.length && cells.every(isTableDividerCell));
+};
+
+const createTableCellMarkup = (tagName, value) => `<${tagName}>${renderInline(value)}</${tagName}>`;
+
+const renderTable = (lines, startIndex) => {
+  if (!isTableDivider(lines[startIndex + 1] || "")) {
+    return null;
+  }
+
+  const headerCells = splitTableRow(lines[startIndex]);
+  if (!headerCells) {
+    return null;
+  }
+
+  const rows = [];
+  let index = startIndex + 2;
+
+  while (index < lines.length) {
+    const rowCells = splitTableRow(lines[index]);
+    if (!rowCells) {
+      break;
+    }
+
+    rows.push(rowCells);
+    index += 1;
+  }
+
+  const columnCount = headerCells.length;
+  const normalizeCells = (cells) => (
+    Array.from({ length: columnCount }, (_value, cellIndex) => cells[cellIndex] || "")
+  );
+  const hasHeader = headerCells.some((cell) => cell.trim());
+
+  const thead = hasHeader ? `
+    <thead>
+      <tr>${normalizeCells(headerCells).map((cell) => createTableCellMarkup("th", cell)).join("")}</tr>
+    </thead>
+  ` : "";
+
+  const tbody = rows.length ? `
+    <tbody>
+      ${rows.map((row) => (
+        `<tr>${normalizeCells(row).map((cell) => createTableCellMarkup("td", cell)).join("")}</tr>`
+      )).join("")}
+    </tbody>
+  ` : "";
+
+  return {
+    html: `<div class="markdown-table"><table>${thead}${tbody}</table></div>`,
+    nextIndex: index
+  };
+};
+
 export const markdownToHtml = (markdown) => {
   const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
   const html = [];
@@ -81,7 +177,8 @@ export const markdownToHtml = (markdown) => {
     codeLines: []
   };
 
-  lines.forEach((line) => {
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
     const codeFence = line.match(/^```([A-Za-z0-9_-]+)?\s*$/);
 
     if (state.inCodeBlock) {
@@ -94,19 +191,27 @@ export const markdownToHtml = (markdown) => {
       } else {
         state.codeLines.push(line);
       }
-      return;
+      continue;
     }
 
     if (codeFence) {
       closeOpenBlocks(state, html);
       state.inCodeBlock = true;
       state.codeLanguage = codeFence[1] || "";
-      return;
+      continue;
     }
 
     if (!line.trim()) {
       closeOpenBlocks(state, html);
-      return;
+      continue;
+    }
+
+    const table = renderTable(lines, index);
+    if (table) {
+      closeOpenBlocks(state, html);
+      html.push(table.html);
+      index = table.nextIndex - 1;
+      continue;
     }
 
     const heading = line.match(/^(#{1,6})\s+(.+)$/);
@@ -115,13 +220,13 @@ export const markdownToHtml = (markdown) => {
       const level = heading[1].length;
       const text = heading[2].trim();
       html.push(`<h${level} id="${escapeAttribute(slugify(stripMarkdown(text)))}">${renderInline(text)}</h${level}>`);
-      return;
+      continue;
     }
 
     if (/^(?:---|\*\*\*|___)\s*$/.test(line.trim())) {
       closeOpenBlocks(state, html);
       html.push("<hr>");
-      return;
+      continue;
     }
 
     const quote = line.match(/^>\s?(.*)$/);
@@ -129,7 +234,7 @@ export const markdownToHtml = (markdown) => {
       closeParagraph(state, html);
       closeList(state, html);
       state.quote.push(quote[1]);
-      return;
+      continue;
     }
 
     const unorderedItem = line.match(/^\s*[-*+]\s+(.+)$/);
@@ -146,13 +251,13 @@ export const markdownToHtml = (markdown) => {
         html.push(`<${state.listType}>`);
       }
       html.push(`<li>${renderInline((unorderedItem || orderedItem)[1])}</li>`);
-      return;
+      continue;
     }
 
     closeQuote(state, html);
     closeList(state, html);
     state.paragraph.push(line.trim());
-  });
+  }
 
   if (state.inCodeBlock) {
     const languageClass = state.codeLanguage ? ` class="language-${escapeAttribute(state.codeLanguage)}"` : "";

@@ -750,7 +750,8 @@ a {
 .markdown-content ul,
 .markdown-content ol,
 .markdown-content blockquote,
-.markdown-content pre {
+.markdown-content pre,
+.markdown-content .markdown-table {
   margin: 0 0 20px;
 }
 
@@ -813,6 +814,38 @@ a {
   padding: 0;
   border: 0;
   background: none;
+}
+
+.markdown-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.markdown-content table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  color: #d4d4d4;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.markdown-content th,
+.markdown-content td {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-content th {
+  background: rgba(255, 255, 255, .07);
+  color: #f4f4f4;
+  font-weight: 700;
+}
+
+.markdown-content td {
+  background: rgba(255, 255, 255, .025);
 }
 
 .markdown-content img {

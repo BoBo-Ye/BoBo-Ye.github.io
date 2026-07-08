@@ -16,7 +16,7 @@ export const safeUrl = (url) => {
 
 export const slugify = (value) => normalizeWhitespace(value)
   .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/[^\p{L}\p{N}]+/gu, "-")
   .replace(/^-+|-+$/g, "") || "post";
 
 export const stripMarkdown = (value) => normalizeWhitespace(

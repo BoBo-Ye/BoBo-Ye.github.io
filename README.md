@@ -7,7 +7,7 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 - Profile landing page with avatar and primary navigation.
 - About page that loads profile details, education, resume link, and social links from `data/about.json`.
 - Projects page that renders JSON entries from `data/projects/index.json`, including time labels, time-aware ordering, title tags, author highlighting, preview images, descriptions, external paper links, and local PDF downloads.
-- Blogs page that opens as a collection-style index with post cards, tag/status sidebar filters, and Markdown files listed in `data/blogs/index.json`. Each post renders with a sticky table-of-contents sidebar and supports front matter, status labels, tags, code blocks, lists, block quotes, links, and images.
+- Blogs page that opens as a collection-style index with post cards, tag/status sidebar filters, and Markdown files listed in `data/blogs/index.json`. Each post renders with a sticky table-of-contents sidebar and supports front matter, status labels, tags, Unicode heading anchors, code blocks, lists, tables, block quotes, links, and images.
 - Shared dark visual style in `css/style.css`, including responsive About, Projects, and Blogs layouts and a reduced-motion-safe animated light effect.
 - Local image, resume, and project document assets kept under `assets/`, with PNG and PDF files tracked through Git LFS.
 - Dependency-free ES module static files that can be served from any basic web server.
@@ -104,8 +104,10 @@ Add blog posts as `.md` files in `data/blogs/`, then list each file in `data/blo
 ```json
 {
   "posts": [
-    "科研实用工具合集.md",
-    "个人云服务器搭建.md"
+    "从API到Agent_1.md",
+    "个人云服务器搭建.md",
+    "终端常用命令合集.md",
+    "科研实用工具合集.md"
   ]
 }
 ```
@@ -128,6 +130,6 @@ status: Completed
 Write the post body here.
 ```
 
-Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, highlighted bold text, italic text, horizontal rules, and fenced code blocks.
+Supported Markdown includes headings, paragraphs, ordered and unordered lists, block quotes, links, images, inline code, highlighted bold text, italic text, horizontal rules, fenced code blocks, and pipe tables. Heading IDs preserve Unicode letters and numbers, and duplicate slugs are disambiguated automatically for table-of-contents links.
 
 The optional `status` field is shown as the blog index badge and grouped in the sidebar. Supported values are `Completed`, `Updating`, and `TODO`; matching is case-insensitive, and posts without this field use `Completed`.
