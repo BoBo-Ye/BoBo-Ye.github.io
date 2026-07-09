@@ -16,6 +16,7 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 
 ```text
 .
+|-- .nojekyll
 |-- assets/
 |   |-- docs/
 |   |   |-- AdversarialGameMARL.pdf
@@ -62,6 +63,10 @@ Then open:
 - About: `http://localhost:8000/html/about.html`
 - Blogs: `http://localhost:8000/html/blog.html`
 - Projects: `http://localhost:8000/html/projects.html`
+
+## Deploying to GitHub Pages
+
+Keep `.nojekyll` in the repository root. The Blogs page fetches raw Markdown files from `data/blogs/`; without `.nojekyll`, GitHub Pages runs Jekyll and converts front-matter Markdown files into `.html`, which makes the original `.md` URLs return 404.
 
 ## Editing Profile Content
 
