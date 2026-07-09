@@ -9,7 +9,7 @@ A small static personal homepage for BoBo Ye. The site includes a profile landin
 - Projects page that renders JSON entries from `data/projects/index.json`, including time labels, time-aware ordering, title tags, author highlighting, preview images, descriptions, external paper links, and local PDF downloads.
 - Blogs page that opens as a collection-style index with post cards, tag/status sidebar filters, and Markdown files listed in `data/blogs/index.json`. Each post renders with a sticky table-of-contents sidebar and supports front matter, status labels, tags, Unicode heading anchors, code blocks, lists, tables, block quotes, links, and images.
 - Shared dark visual style in `css/style.css`, including responsive About, Projects, and Blogs layouts and a reduced-motion-safe animated light effect.
-- Local image, resume, and project document assets kept under `assets/`, with PNG and PDF files tracked through Git LFS.
+- Local image, resume, and project document assets kept under `assets/` as regular Git files so GitHub Pages can serve them directly.
 - Dependency-free ES module static files that can be served from any basic web server.
 
 ## Project Structure
@@ -95,7 +95,7 @@ Project entries support `conference`, `title`, `authors`, `time`, `url`, `downlo
 
 ## Large Assets
 
-PNG and PDF assets are tracked through Git LFS via `.gitattributes`. Add large previews and downloadable documents under `assets/` before committing so the matching LFS rules apply.
+Keep site-facing PNG and PDF assets under `assets/` as regular Git files. GitHub Pages does not serve Git LFS objects, so assets needed by the live site should not be tracked with LFS.
 
 ## Editing Blogs
 
