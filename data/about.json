@@ -5,12 +5,6 @@
   "bio": [
     "Hi, I'm BoBo, a student developer exploring Agents. 👋 \n Looking for an internship!"
   ],
-  "resume": {
-    "prefix": "Download my ",
-    "label": "RESUME",
-    "url": "assets/docs/YHW-Chinese-20260603.pdf",
-    "download": "YHW-Chinese-20260603.pdf"
-  },
   "details": [
     {
       "label": "Major",

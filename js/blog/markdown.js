@@ -23,9 +23,9 @@ const renderInline = (value) => {
       const titleAttribute = title ? ` title="${escapeAttribute(title)}"` : "";
       return `<a href="${escapeAttribute(safeUrl(url))}"${titleAttribute}>${text}</a>`;
     })
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>&lt;$1&gt;</strong>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/__([^_]+)__/g, "<strong>&lt;$1&gt;</strong>")
+    .replace(/__([^_]+)__/g, "<strong>$1</strong>")
     .replace(/_([^_]+)_/g, "<em>$1</em>");
 
   codeSpans.forEach((code, index) => {
@@ -174,19 +174,25 @@ export const markdownToHtml = (markdown) => {
     listType: "",
     inCodeBlock: false,
     codeLanguage: "",
+    codeFenceLength: 0,
     codeLines: []
   };
 
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
-    const codeFence = line.match(/^```([A-Za-z0-9_-]+)?\s*$/);
+    const codeFence = line.match(/^(`{3,})([A-Za-z0-9_-]+)?\s*$/);
 
     if (state.inCodeBlock) {
-      if (codeFence) {
+      const isClosingFence = codeFence
+        && !codeFence[2]
+        && codeFence[1].length >= state.codeFenceLength;
+
+      if (isClosingFence) {
         const languageClass = state.codeLanguage ? ` class="language-${escapeAttribute(state.codeLanguage)}"` : "";
         html.push(`<pre><code${languageClass}>${escapeHtml(state.codeLines.join("\n"))}</code></pre>`);
         state.inCodeBlock = false;
         state.codeLanguage = "";
+        state.codeFenceLength = 0;
         state.codeLines = [];
       } else {
         state.codeLines.push(line);
@@ -197,7 +203,8 @@ export const markdownToHtml = (markdown) => {
     if (codeFence) {
       closeOpenBlocks(state, html);
       state.inCodeBlock = true;
-      state.codeLanguage = codeFence[1] || "";
+      state.codeFenceLength = codeFence[1].length;
+      state.codeLanguage = codeFence[2] || "";
       continue;
     }
 

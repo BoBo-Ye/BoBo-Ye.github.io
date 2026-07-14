@@ -10,24 +10,6 @@ const iconPaths = {
   github: "M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2.02c-3.2.69-3.88-1.36-3.88-1.36-.53-1.33-1.29-1.68-1.29-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.41-1.27.74-1.56-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.2 1.18A11.1 11.1 0 0 1 12 6.18c.99 0 1.99.13 2.92.39 2.22-1.49 3.19-1.18 3.19-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.42.36.79 1.07.79 2.16v3.02c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
 };
 
-const appendResumeLink = (paragraph, resumeData) => {
-  if (!resumeData || !resumeData.label || !resumeData.url) {
-    return;
-  }
-
-  const anchor = document.createElement("a");
-  anchor.href = resumeData.url;
-  anchor.textContent = resumeData.label;
-  anchor.setAttribute("download", resumeData.download || "");
-  anchor.setAttribute("aria-label", "Download resume");
-
-  paragraph.append(
-    document.createTextNode(` ${resumeData.prefix || "Download my "}`),
-    anchor,
-    document.createTextNode(".")
-  );
-};
-
 const renderBio = (about) => {
   const bio = document.querySelector("[data-about-bio]");
   if (!bio || !Array.isArray(about.bio)) {
@@ -39,9 +21,6 @@ const renderBio = (about) => {
   paragraphs.forEach((paragraph, index) => {
     const p = document.createElement("p");
     p.textContent = paragraph;
-    if (index === paragraphs.length - 1) {
-      appendResumeLink(p, about.resume);
-    }
     bio.appendChild(p);
   });
 };
